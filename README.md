@@ -28,7 +28,36 @@ Todo o código foi preenchido por células de texto que incluem interpretações
 - O Nordeste é a segunda região mais populosa do país e apresenta uma grande diversidade social, econômica e cultural. Essa heterogeneidade interna torna possível identificar padrões, desigualdades e características específicas que poderiam passar despercebidos em uma análise nacional mais ampla.
 - Além disso, por ser uma região extensa e com desafios históricos relevantes, o Nordeste oferece um campo fértil para investigações que buscam compreender dinâmicas regionais, o impacto de políticas públicas e disparidades socioeconômicas. Com isso, acreditamos que a análise focada nessa região pode gerar insights significativos e contribuir para uma compreensão mais aprofundada da realidade brasileira.
 # Pré-processamento de Dados
-O ponto de partida foi o dataset completo dos Microdados do ENEM 2023. A primeira etapa de pré-processamento consistiu em uma filtragem geográfica para isolar apenas os registros da Região Nordeste, utilizando a coluna SG_UF_PROVA. Para viabilizar a análise computacional, aplicamos uma amostragem aleatória de 30% sobre o subconjunto do Nordeste, uma técnica que reduziu a dimensionalidade do dataset mantendo, ainda sim, sua representatividade estatística. Nessa fase, a principal decisão de limpeza que tomamos foi a remoção de registros de participantes ausentes. Essa ação foi essencial, pois a análise de desempenho dependia diretamente das notas, que estariam nulas para esses casos. Para o nosso propósito, a análise de dados de participantes que não compareceram não agregaria valor ao objetivo do estudo.
+O ponto de partida foi o dataset completo dos Microdados do ENEM 2023. A primeira etapa de pré-processamento consistiu em uma filtragem geográfica para isolar apenas os registros da Região Nordeste, utilizando a coluna SG_UF_PROVA. 
+
+![image](https://github.com/user-attachments/assets/aa61de28-4ce9-415d-bc66-98e1bea94165)
+
+Para viabilizar a análise computacional, aplicamos uma amostragem aleatória de 30% sobre o subconjunto do Nordeste, uma técnica que reduziu a dimensionalidade do dataset mantendo, ainda sim, sua representatividade estatística. 
+
+![image](https://github.com/user-attachments/assets/101a020a-821d-4789-9632-d7991c55a036)
+
+
+A principal decisão de limpeza que tomamos foi a remoção de registros de participantes ausentes. Primeiro, formulamos hipóteses e geramos alguns gráficos para entender o porquê da porcentagem alta de dados faltantes nas varíaveis TX_GABARITO, TX_RESPOSTAS, CO_PROVA e NU_NOTA. Depois, consideramos analisar apenas os registros relativos aos presentes na prova para ver se tinha relação com as taxas supracitadas. Essa ação foi essencial, pois a análise de desempenho de fato dependia diretamente das notas, que estariam nulas para os casos de ausentes na prova.  
+
+A seguir, gráficos de barras considerando os registros relativos aos inscritos presentes e os ausentes e apenas os inscritos presentes na prova, respectivamente:
+
+![image](https://github.com/user-attachments/assets/d128413e-22b0-4c10-8e78-0adeb916ee6f)
+
+
+![image](https://github.com/user-attachments/assets/8eb67579-83d4-45dd-b263-6184045a9c62)
+
+Durante a análise exploratória, identificamos que as colunas TX_RESPOSTAS (TX_RESPOSTAS_CN, TX_RESPOSTAS_CH, TX_RESPOSTAS_LC e TX_RESPOSTAS_MT) contêm apenas um ID que representa as respostas dadas pelos participantes nas quatro áreas avaliadas no ENEM. Essas informações, por si só, não indicam se as respostas estão corretas, o que limita sua utilidade para análise de desempenho.
+
+Para resolver isso, combinamos cada coluna de respostas com a respectiva coluna de gabarito oficial (TX_GABARITO) e, com o uso de uma função (contar_acertos), calculamos o número total de acertos de cada participante em cada área e de maneira geral na prova. Os resultados foram armazenados em novas colunas: ACERTOS_CN, ACERTOS_CH, ACERTOS_LC, ACERTOS_MTe ACERTOS_GERAL
+
+Essa transformação foi aplicada aos participantes presentes nas provas, e tem como objetivo facilitar a visualização, a comparação e a análise do desempenho individual e coletivo. Com isso, será possível investigar padrões de acerto entre diferentes grupos sociais, regiões ou perfis de estudantes de forma muito mais clara e objetiva.
+
+![image](https://github.com/user-attachments/assets/015f09a2-aec4-4484-b48a-1814a36e59e5)
+
+Também criamos a variável MEDIA_OBJETIVAS com o intuito de facilitar o cálculo das médias entre os estados na criação dos rankings.
+
+![image](https://github.com/user-attachments/assets/d36515b2-fe71-42f9-b048-2cde3e03f7f0)
+
 # Análise
 Aqui, iniciamos com uma análise descritiva para entender a distribuição de cada variável chave, como as notas de cada prova, utilizando histogramas e boxplots para visualizar a frequência, média e a presença de outliers. O eixo central da investigação foi a correlação entre a renda_per_capita e o desempenho acadêmico. Cruzamos essa variável com as notas de Redação, Matemática e Ciências da Natureza para identificar tendências e padrões de desigualdade. Também expandimos a análise para investigar o impacto de outras variáveis, como a TP_COR_RACA (raça e etnia) e o TP_DEPENDENCIA_ADM_ESC (tipo de escola), no desempenho geral e por disciplina. Ademais, também realizamos uma análise comparativa entre os estados do Nordeste, criando rankings de desempenho médio e aprofundando a investigação em nível municipal para identificar "ilhas de excelência".
 # Principais Insights
